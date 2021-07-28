@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: MatBackground
+  m_Name: MatFrame
   m_Shader: {fileID: 4800000, guid: 3f0d4a2e325f9c24f8251b7b8534a096, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
@@ -19,9 +19,9 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 2702b1e1e499e2a4ebd2088bb7125ab0, type: 3}
+        m_Texture: {fileID: 2800000, guid: b7685f0652736644fb58059655eb7bd3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats: []
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.69803923, g: 0.69803923, b: 0.69803923, a: 1}
