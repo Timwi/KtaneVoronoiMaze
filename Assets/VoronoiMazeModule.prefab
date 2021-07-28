@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 11496072}
   - component: {fileID: 11489182}
   m_Layer: 0
-  m_Name: SerialMazeModule
+  m_Name: VoronoiMazeModule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: -119419473, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ModuleType: SerialMazeModule
-  ModuleDisplayName: Serial Maze
+  ModuleType: VoronoiMazeModule
+  ModuleDisplayName: Voronoi Maze
   RequiresTimerVisibility: 0
 --- !u!114 &11464240
 MonoBehaviour:
@@ -177,7 +177,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 127088}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1114788026, guid: a6a455a2084b7fd47a87bd9a66142041, type: 3}
+  m_Script: {fileID: -1189399617, guid: 41a69b1a4f4c76547afe79434f6a5ad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Bomb: {fileID: 11489324}

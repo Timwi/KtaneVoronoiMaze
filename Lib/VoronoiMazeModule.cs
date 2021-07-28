@@ -9,7 +9,7 @@ using UnityEngine;
 
 using Rnd = UnityEngine.Random;
 
-public class SerialMazeModule : MonoBehaviour
+public class VoronoiMazeModule : MonoBehaviour
 {
     public KMBombInfo Bomb;
     public KMBombModule Module;

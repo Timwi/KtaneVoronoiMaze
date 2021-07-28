@@ -5,4 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity", Scope = "member", Target = "~M:SerialMazeModule.Awake")]
+[assembly: SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Unity", Scope = "member", Target = "~M:VoronoiMazeModule.Awake")]

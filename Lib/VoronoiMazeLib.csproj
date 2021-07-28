@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4C3C8D4A-C793-467E-B02A-2ADC1937A9FF}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>SerialMazeLib</RootNamespace>
-    <AssemblyName>SerialMazeLib</AssemblyName>
+    <RootNamespace>VoronoiMazeLib</RootNamespace>
+    <AssemblyName>VoronoiMazeLib</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -96,7 +96,7 @@
     <Compile Include="PointD.cs" />
     <Compile Include="PolygonD.cs" />
     <Compile Include="PriorityQueue.cs" />
-    <Compile Include="SerialMazeModule.cs" />
+    <Compile Include="VoronoiMazeModule.cs" />
     <Compile Include="Ut.cs" />
     <Compile Include="VoronoiDiagram.cs" />
     <Compile Include="AssemblyInfo.cs" />

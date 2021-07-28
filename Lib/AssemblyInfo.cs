@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SerialMazeLib")]
-[assembly: AssemblyDescription("Library containing code for the Serial Maze KTANE module.")]
+[assembly: AssemblyTitle("VoronoiMazeLib")]
+[assembly: AssemblyDescription("Library containing code for the Voronoi Maze KTANE module.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SerialMazeLib")]
+[assembly: AssemblyProduct("VoronoiMazeLib")]
 [assembly: AssemblyCopyright("Copyright © Timwi 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
