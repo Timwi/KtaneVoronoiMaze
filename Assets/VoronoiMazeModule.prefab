@@ -79,7 +79,6 @@ Transform:
   - {fileID: 4907762829095714}
   - {fileID: 479804}
   - {fileID: 413386}
-  - {fileID: 4526118986795252}
   - {fileID: 4373813016794576}
   - {fileID: 4700195960588458}
   - {fileID: 4492472245643532}
@@ -186,34 +185,39 @@ MonoBehaviour:
   Frame: {fileID: 23344465683456556}
   Audio: {fileID: 11496072}
   LineTemplate: {fileID: 23502795584178124}
-  TextTemplate: {fileID: 102290620096834540}
   SelectableTemplate: {fileID: 114891894857015848}
   StatusLightParent: {fileID: 156232}
   Keys:
   - {fileID: 1532451068170014}
   - {fileID: 1297602027513388}
   - {fileID: 1089438172706718}
-  DefaultRoomColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0}
-  PassableColor: {r: 0.09803922, g: 0.09803922, b: 0.09803922, a: 0}
-  ImpassableColor: {r: 0.69803923, g: 0.69803923, b: 0.69803923, a: 0}
+  DefaultRoomColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
+  PassableColor: {r: 0.09803922, g: 0.09803922, b: 0.09803922, a: 1}
+  ImpassableColor: {r: 0.69803923, g: 0.69803923, b: 0.69803923, a: 1}
   KeyColors:
   - {r: 0.8088235, g: 0.13083908, b: 0.13083908, a: 0}
   - {r: 0.8666667, g: 0.86764705, b: 0.25519028, a: 0}
   - {r: 0.24599914, g: 0.4858908, b: 0.9558824, a: 0}
   DefaultRoomColors:
   - {r: 0.3602941, g: 0.10596885, b: 0.10596885, a: 1}
-  - {r: 0.3600749, g: 0.3607843, b: 0.106113024, a: 1}
-  - {r: 0.106113024, g: 0.19265866, b: 0.3607843, a: 0}
+  - {r: 0.3607843, g: 0.34295732, b: 0.106113024, a: 1}
+  - {r: 0.106113024, g: 0.19265866, b: 0.3607843, a: 1}
   CurrentRoomColors:
-  - {r: 1, g: 0.375, b: 0.375, a: 0}
-  - {r: 0.998853, g: 1, b: 0.58823526, a: 0}
-  - {r: 0.5808823, g: 0.72331226, b: 1, a: 0}
+  - {r: 1.0147059, g: 0.5652115, b: 0.32082614, a: 1}
+  - {r: 1, g: 0.9974411, b: 0.3602941, a: 1}
+  - {r: 0.44117647, g: 0.7918865, b: 1, a: 1}
   WallColors:
   - {r: 0.0627451, g: 0.019838525, b: 0.019838525, a: 1}
   - {r: 0.06262173, g: 0.062745094, b: 0.018454438, a: 1}
-  - {r: 0.01845444, g: 0.03350586, b: 0.0627451, a: 0}
-  SolvedColor: {r: 0.234792, g: 0.8602941, b: 0.18344508, a: 0}
-  SolvedWallColor: {r: 0.017190432, g: 0.0627451, b: 0.013465841, a: 1}
+  - {r: 0.01845444, g: 0.03350586, b: 0.0627451, a: 1}
+  RevealedWallColors:
+  - {r: 0.7529412, g: 0.23806229, b: 0.23806229, a: 1}
+  - {r: 0.75151956, g: 0.753, b: 0.22147053, a: 1}
+  - {r: 0.29411763, g: 0.5339996, b: 1, a: 1}
+  SolvedColor: {r: 0.28235295, g: 0.63235295, b: 0.28430274, a: 1}
+  StrikeColor: {r: 0.728, g: 0, b: 0, a: 1}
+  SolvedWallColor: {r: 0.03067299, g: 0.062745094, b: 0.028050747, a: 1}
+  SolvedRevealedWallColor: {r: 0.37647057, g: 0.7529412, b: 0.32941172, a: 1}
 --- !u!114 &11489324
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -257,6 +261,7 @@ GameObject:
   - component: {fileID: 4724929204496332}
   - component: {fileID: 23178078875558174}
   - component: {fileID: 33379961308766842}
+  - component: {fileID: 114971686271776948}
   m_Layer: 0
   m_Name: Key3
   m_TagString: Untagged
@@ -274,6 +279,7 @@ GameObject:
   - component: {fileID: 4541359060851452}
   - component: {fileID: 23793206083500092}
   - component: {fileID: 33681907585004726}
+  - component: {fileID: 114439965631389896}
   m_Layer: 0
   m_Name: Key2
   m_TagString: Untagged
@@ -293,6 +299,7 @@ GameObject:
   - component: {fileID: 64919301688087160}
   - component: {fileID: 33810324445600240}
   - component: {fileID: 23073036582190970}
+  - component: {fileID: 114975299225079518}
   m_Layer: 0
   m_Name: SelectableTemplate
   m_TagString: Untagged
@@ -317,24 +324,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1475159172826634
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4526118986795252}
-  - component: {fileID: 23559693867508916}
-  - component: {fileID: 102290620096834540}
-  - component: {fileID: 114095889567557990}
-  m_Layer: 0
-  m_Name: TextTemplate
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1532451068170014
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,6 +334,7 @@ GameObject:
   - component: {fileID: 4492472245643532}
   - component: {fileID: 23399489596212516}
   - component: {fileID: 33915015873382898}
+  - component: {fileID: 114797307875440062}
   m_Layer: 0
   m_Name: Key1
   m_TagString: Untagged
@@ -399,7 +389,7 @@ Transform:
   m_LocalScale: {x: 0.002, y: 0.07, z: 0.1}
   m_Children: []
   m_Father: {fileID: 474250}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!4 &4492472245643532
 Transform:
@@ -412,7 +402,7 @@ Transform:
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children: []
   m_Father: {fileID: 474250}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!4 &4492749295159044
 Transform:
@@ -427,19 +417,6 @@ Transform:
   m_Father: {fileID: 4700195960588458}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4526118986795252
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1475159172826634}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.0102, z: 0}
-  m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
-  m_Children: []
-  m_Father: {fileID: 474250}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!4 &4541359060851452
 Transform:
   m_ObjectHideFlags: 1
@@ -451,7 +428,7 @@ Transform:
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children: []
   m_Father: {fileID: 474250}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!4 &4700195960588458
 Transform:
@@ -460,12 +437,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1360000635663968}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0101, z: 0}
+  m_LocalPosition: {x: 0, y: 0.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4492749295159044}
   m_Father: {fileID: 474250}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4724929204496332
 Transform:
@@ -478,7 +455,7 @@ Transform:
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children: []
   m_Father: {fileID: 474250}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!4 &4907762829095714
 Transform:
@@ -663,40 +640,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!23 &23559693867508916
-MeshRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1475159172826634}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 2100000, guid: 4c960eb5052abd5489ecab9cc971fbf7, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
 --- !u!23 &23793206083500092
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -794,40 +737,6 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 0}
---- !u!102 &102290620096834540
-TextMesh:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1475159172826634}
-  m_Text: A
-  m_OffsetZ: 0
-  m_CharacterSize: 1
-  m_LineSpacing: 1
-  m_Anchor: 4
-  m_Alignment: 1
-  m_TabSize: 4
-  m_FontSize: 128
-  m_FontStyle: 0
-  m_RichText: 1
-  m_Font: {fileID: 12800000, guid: 9b40cdbcd9930a14d9721c93d5651299, type: 3}
-  m_Color:
-    serializedVersion: 2
-    rgba: 4278190080
---- !u!114 &114095889567557990
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1475159172826634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1005838349, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShaderNames:
-  - GUI/KT 3D Text Diffuse
 --- !u!114 &114160678673228512
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -853,7 +762,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Mobile/Diffuse
+  - KT/Mobile/DiffuseTint
 --- !u!114 &114423428992414562
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -866,7 +775,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - KT/Mobile/Diffuse
+  - KT/Mobile/DiffuseTint
+--- !u!114 &114439965631389896
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1297602027513388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1005838349, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShaderNames:
+  - KT/Transparent/Mobile Diffuse Underlay200
+--- !u!114 &114797307875440062
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1532451068170014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1005838349, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShaderNames:
+  - KT/Transparent/Mobile Diffuse Underlay200
 --- !u!114 &114891894857015848
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -890,3 +825,29 @@ MonoBehaviour:
   AllowSelectionWrapY: 0
   ForceSelectionHighlight: 0
   ForceInteractionHighlight: 0
+--- !u!114 &114971686271776948
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1089438172706718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1005838349, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShaderNames:
+  - KT/Transparent/Mobile Diffuse Underlay200
+--- !u!114 &114975299225079518
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1360000635663968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1005838349, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShaderNames:
+  - KT/Mobile/DiffuseTint

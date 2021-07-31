@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace RT.Util.ExtensionMethods
@@ -175,6 +176,314 @@ namespace RT.Util.ExtensionMethods
                 index++;
             }
             return -1;
+        }
+
+        /// <summary>
+        ///     Returns a collection of integers containing the indexes at which the elements of the source collection match
+        ///     the given predicate.</summary>
+        /// <typeparam name="T">
+        ///     The type of elements in the collection.</typeparam>
+        /// <param name="source">
+        ///     The source collection whose elements are tested using <paramref name="predicate"/>.</param>
+        /// <param name="predicate">
+        ///     The predicate against which the elements of <paramref name="source"/> are tested.</param>
+        /// <returns>
+        ///     A collection containing the zero-based indexes of all the matching elements, in increasing order.</returns>
+        public static IEnumerable<int> SelectIndexWhere<T>(this IEnumerable<T> source, Predicate<T> predicate)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
+            IEnumerable<int> selectIndexWhereIterator()
+            {
+                int i = 0;
+                using (var e = source.GetEnumerator())
+                {
+                    while (e.MoveNext())
+                    {
+                        if (predicate(e.Current))
+                            yield return i;
+                        i++;
+                    }
+                }
+            }
+            return selectIndexWhereIterator();
+        }
+
+        /// <summary>
+        ///     Returns the minimum resulting value in a sequence, or a default value if the sequence is empty.</summary>
+        /// <typeparam name="TSource">
+        ///     The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">
+        ///     A sequence of values to determine the minimum value of.</param>
+        /// <param name="default">
+        ///     A default value to return in case the sequence is empty.</param>
+        /// <returns>
+        ///     The minimum value in the sequence, or the specified default value if the sequence is empty.</returns>
+        public static TSource MinOrDefault<TSource>(this IEnumerable<TSource> source, TSource @default = default)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            var (result, found) = minMax(source, min: true);
+            return found ? result : @default;
+        }
+
+        /// <summary>
+        ///     Invokes a selector on each element of a collection and returns the minimum resulting value, or a default value
+        ///     if the sequence is empty.</summary>
+        /// <typeparam name="TSource">
+        ///     The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">
+        ///     The type of the value returned by <paramref name="selector"/>.</typeparam>
+        /// <param name="source">
+        ///     A sequence of values to determine the minimum value of.</param>
+        /// <param name="selector">
+        ///     A transform function to apply to each element.</param>
+        /// <param name="default">
+        ///     A default value to return in case the sequence is empty.</param>
+        /// <returns>
+        ///     The minimum value in the sequence, or the specified default value if the sequence is empty.</returns>
+        public static TResult MinOrDefault<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, TResult @default = default)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (selector == null)
+                throw new ArgumentNullException(nameof(selector));
+            var (result, found) = minMax(source.Select(selector), min: true);
+            return found ? result : @default;
+        }
+
+        /// <summary>
+        ///     Returns the maximum resulting value in a sequence, or a default value if the sequence is empty.</summary>
+        /// <typeparam name="TSource">
+        ///     The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">
+        ///     A sequence of values to determine the maximum value of.</param>
+        /// <param name="default">
+        ///     A default value to return in case the sequence is empty.</param>
+        /// <returns>
+        ///     The maximum value in the sequence, or the specified default value if the sequence is empty.</returns>
+        public static TSource MaxOrDefault<TSource>(this IEnumerable<TSource> source, TSource @default = default)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            var (result, found) = minMax(source, min: false);
+            return found ? result : @default;
+        }
+
+        /// <summary>
+        ///     Invokes a selector on each element of a collection and returns the maximum resulting value, or a default value
+        ///     if the sequence is empty.</summary>
+        /// <typeparam name="TSource">
+        ///     The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">
+        ///     The type of the value returned by <paramref name="selector"/>.</typeparam>
+        /// <param name="source">
+        ///     A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">
+        ///     A transform function to apply to each element.</param>
+        /// <param name="default">
+        ///     A default value to return in case the sequence is empty.</param>
+        /// <returns>
+        ///     The maximum value in the sequence, or the specified default value if the sequence is empty.</returns>
+        public static TResult MaxOrDefault<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, TResult @default = default)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (selector == null)
+                throw new ArgumentNullException(nameof(selector));
+            var (result, found) = minMax(source.Select(selector), min: false);
+            return found ? result : @default;
+        }
+
+        /// <summary>
+        ///     Returns the minimum resulting value in a sequence, or <c>null</c> if the sequence is empty.</summary>
+        /// <typeparam name="TSource">
+        ///     The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">
+        ///     A sequence of values to determine the minimum value of.</param>
+        /// <returns>
+        ///     The minimum value in the sequence, or <c>null</c> if the sequence is empty.</returns>
+        public static TSource? MinOrNull<TSource>(this IEnumerable<TSource> source) where TSource : struct
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            var (result, found) = minMax(source, min: true);
+            return found ? result : (TSource?) null;
+        }
+
+        /// <summary>
+        ///     Invokes a selector on each element of a collection and returns the minimum resulting value, or <c>null</c> if
+        ///     the sequence is empty.</summary>
+        /// <typeparam name="TSource">
+        ///     The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">
+        ///     The type of the value returned by <paramref name="selector"/>.</typeparam>
+        /// <param name="source">
+        ///     A sequence of values to determine the minimum value of.</param>
+        /// <param name="selector">
+        ///     A transform function to apply to each element.</param>
+        /// <returns>
+        ///     The minimum value in the sequence, or <c>null</c> if the sequence is empty.</returns>
+        public static TResult? MinOrNull<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) where TResult : struct
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (selector == null)
+                throw new ArgumentNullException(nameof(selector));
+            var (result, found) = minMax(source.Select(selector), min: true);
+            return found ? result : (TResult?) null;
+        }
+
+        /// <summary>
+        ///     Returns the maximum resulting value in a sequence, or <c>null</c> if the sequence is empty.</summary>
+        /// <typeparam name="TSource">
+        ///     The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">
+        ///     A sequence of values to determine the maximum value of.</param>
+        /// <returns>
+        ///     The maximum value in the sequence, or <c>null</c> if the sequence is empty.</returns>
+        public static TSource? MaxOrNull<TSource>(this IEnumerable<TSource> source) where TSource : struct
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            var (result, found) = minMax(source, min: false);
+            return found ? result : (TSource?) null;
+        }
+
+        /// <summary>
+        ///     Invokes a selector on each element of a collection and returns the maximum resulting value, or <c>null</c> if
+        ///     the sequence is empty.</summary>
+        /// <typeparam name="TSource">
+        ///     The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <typeparam name="TResult">
+        ///     The type of the value returned by <paramref name="selector"/>.</typeparam>
+        /// <param name="source">
+        ///     A sequence of values to determine the maximum value of.</param>
+        /// <param name="selector">
+        ///     A transform function to apply to each element.</param>
+        /// <returns>
+        ///     The maximum value in the sequence, or <c>null</c> if the sequence is empty.</returns>
+        public static TResult? MaxOrNull<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector) where TResult : struct
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (selector == null)
+                throw new ArgumentNullException(nameof(selector));
+            var (result, found) = minMax(source.Select(selector), min: false);
+            return found ? result : (TResult?) null;
+        }
+
+        private static (T result, bool found) minMax<T>(IEnumerable<T> source, bool min)
+        {
+            var cmp = Comparer<T>.Default;
+            var curBest = default(T);
+            var haveBest = false;
+            foreach (var elem in source)
+            {
+                if (!haveBest || (min ? cmp.Compare(elem, curBest) < 0 : cmp.Compare(elem, curBest) > 0))
+                {
+                    curBest = elem;
+                    haveBest = true;
+                }
+            }
+            return (curBest, haveBest);
+        }
+
+        /// <summary>
+        ///     Returns the first element from the input sequence for which the value selector returns the smallest value.</summary>
+        /// <exception cref="InvalidOperationException">
+        ///     The input collection is empty.</exception>
+        public static T MinElement<T, TValue>(this IEnumerable<T> source, Func<T, TValue> valueSelector) where TValue : IComparable<TValue> =>
+            minMaxElement(source, valueSelector, min: true, doThrow: true).Value.minMaxElem;
+
+        /// <summary>
+        ///     Returns the first element from the input sequence for which the value selector returns the smallest value, or
+        ///     a default value if the collection is empty.</summary>
+        public static T MinElementOrDefault<T, TValue>(this IEnumerable<T> source, Func<T, TValue> valueSelector, T defaultValue = default) where TValue : IComparable<TValue>
+        {
+            var tup = minMaxElement(source, valueSelector, min: true, doThrow: false);
+            return tup == null ? defaultValue : tup.Value.minMaxElem;
+        }
+
+        /// <summary>
+        ///     Returns the first element from the input sequence for which the value selector returns the largest value.</summary>
+        /// <exception cref="InvalidOperationException">
+        ///     The input collection is empty.</exception>
+        public static T MaxElement<T, TValue>(this IEnumerable<T> source, Func<T, TValue> valueSelector) where TValue : IComparable<TValue> =>
+            minMaxElement(source, valueSelector, min: false, doThrow: true).Value.minMaxElem;
+
+        /// <summary>
+        ///     Returns the first element from the input sequence for which the value selector returns the largest value, or a
+        ///     default value if the collection is empty.</summary>
+        public static T MaxElementOrDefault<T, TValue>(this IEnumerable<T> source, Func<T, TValue> valueSelector, T defaultValue = default(T)) where TValue : IComparable<TValue>
+        {
+            var tup = minMaxElement(source, valueSelector, min: false, doThrow: false);
+            return tup == null ? defaultValue : tup.Value.minMaxElem;
+        }
+
+        /// <summary>
+        ///     Returns the index of the first element from the input sequence for which the value selector returns the
+        ///     smallest value.</summary>
+        /// <exception cref="InvalidOperationException">
+        ///     The input collection is empty.</exception>
+        public static int MinIndex<T, TValue>(this IEnumerable<T> source, Func<T, TValue> valueSelector) where TValue : IComparable<TValue> =>
+            minMaxElement(source, valueSelector, min: true, doThrow: true).Value.minMaxIndex;
+
+        /// <summary>
+        ///     Returns the index of the first element from the input sequence for which the value selector returns the
+        ///     smallest value, or <c>null</c> if the collection is empty.</summary>
+        public static int? MinIndexOrNull<T, TValue>(this IEnumerable<T> source, Func<T, TValue> valueSelector) where TValue : IComparable<TValue> =>
+            minMaxElement(source, valueSelector, min: true, doThrow: false)?.minMaxIndex;
+
+        /// <summary>
+        ///     Returns the index of the first element from the input sequence for which the value selector returns the
+        ///     largest value.</summary>
+        /// <exception cref="InvalidOperationException">
+        ///     The input collection is empty.</exception>
+        public static int MaxIndex<T, TValue>(this IEnumerable<T> source, Func<T, TValue> valueSelector) where TValue : IComparable<TValue> =>
+            minMaxElement(source, valueSelector, min: false, doThrow: true).Value.minMaxIndex;
+
+        /// <summary>
+        ///     Returns the index of the first element from the input sequence for which the value selector returns the
+        ///     largest value, or a default value if the collection is empty.</summary>
+        public static int? MaxIndexOrNull<T, TValue>(this IEnumerable<T> source, Func<T, TValue> valueSelector) where TValue : IComparable<TValue> =>
+            minMaxElement(source, valueSelector, min: false, doThrow: false)?.minMaxIndex;
+
+        private static (int minMaxIndex, T minMaxElem)? minMaxElement<T, TValue>(IEnumerable<T> source, Func<T, TValue> valueSelector, bool min, bool doThrow) where TValue : IComparable<TValue>
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (valueSelector == null)
+                throw new ArgumentNullException(nameof(valueSelector));
+
+            using (var enumerator = source.GetEnumerator())
+            {
+                if (!enumerator.MoveNext())
+                {
+                    if (doThrow)
+                        throw new InvalidOperationException("source contains no elements.");
+                    return null;
+                }
+                var minMaxElem = enumerator.Current;
+                var minMaxValue = valueSelector(minMaxElem);
+                var minMaxIndex = 0;
+                var curIndex = 0;
+                while (enumerator.MoveNext())
+                {
+                    curIndex++;
+                    var value = valueSelector(enumerator.Current);
+                    if (min ? (value.CompareTo(minMaxValue) < 0) : (value.CompareTo(minMaxValue) > 0))
+                    {
+                        minMaxValue = value;
+                        minMaxElem = enumerator.Current;
+                        minMaxIndex = curIndex;
+                    }
+                }
+                return (minMaxIndex, minMaxElem);
+            }
         }
     }
 }

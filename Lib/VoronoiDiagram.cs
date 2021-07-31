@@ -26,7 +26,7 @@ namespace RT.KitchenSink.Geometry
     public sealed class VoronoiDiagram
     {
         /// <summary>Edges of the diagram.</summary>
-        public List<(PointD start, PointD end, int siteA, int siteB)> Edges;
+        public List<(EdgeD edge, int siteA, int siteB)> Edges;
         /// <summary>Polygons corresponding to each of the input points.</summary>
         public PolygonD[] Polygons;
 
@@ -47,7 +47,7 @@ namespace RT.KitchenSink.Geometry
             var data = new data(sites, width, height, flags);
             return new VoronoiDiagram
             {
-                Edges = data.Edges.Select(edge => (edge.Start.Value, edge.End.Value, edge.SiteA.Index, edge.SiteB.Index)).ToList(),
+                Edges = data.Edges.Select(edge => (new EdgeD(edge.Start.Value, edge.End.Value), edge.SiteA.Index, edge.SiteB.Index)).ToList(),
                 Polygons = data.Polygons
                     .Select(p => p.ToPolygonD((flags & VoronoiDiagramFlags.IncludeEdgePolygons) != 0, width, height))
                     .ToArray()

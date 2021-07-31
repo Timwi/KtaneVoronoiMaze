@@ -41,6 +41,10 @@
       <HintPath>..\Assets\Plugins\Managed\KMFramework.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Assets\Plugins\Managed\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>$(GameFolder)\ktane_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
@@ -91,6 +95,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Easing.cs" />
     <Compile Include="EdgeD.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="PointD.cs" />
@@ -107,6 +112,6 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /y "$(TargetDir)*.dll" "$(ProjectDir)..\Assets\Plugins\Managed"
-xcopy /y "$(TargetDir)*.dll" "$(GameFolder)mods\SerialMaze"</PostBuildEvent>
+xcopy /y "$(TargetDir)*.dll" "$(GameFolder)mods\VoronoiMaze"</PostBuildEvent>
   </PropertyGroup>
 </Project>
