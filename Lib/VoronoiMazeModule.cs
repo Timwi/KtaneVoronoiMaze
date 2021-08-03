@@ -405,6 +405,10 @@ public class VoronoiMazeModule : MonoBehaviour
                 var halfReached = false;
                 while (elapsed < duration)
                 {
+                    var point = BézierPoint(fromPoint, mid, mid, toPoint, Easing.InOutQuad(isStrike && elapsed > duration / 2 ? duration - elapsed : elapsed, 0, 1, duration));
+                    StatusLightParent.transform.localPosition = convertPointToVector(point, .01f);
+                    yield return null;
+                    elapsed += Time.deltaTime;
                     if (elapsed >= duration / 2 && !halfReached)
                     {
                         if (isStrike)
@@ -417,10 +421,6 @@ public class VoronoiMazeModule : MonoBehaviour
                         halfReached = true;
                         UpdateVisuals();
                     }
-                    var point = BézierPoint(fromPoint, mid, mid, toPoint, Easing.InOutQuad(isStrike && elapsed > duration / 2 ? duration - elapsed : elapsed, 0, 1, duration));
-                    StatusLightParent.transform.localPosition = convertPointToVector(point, .01f);
-                    yield return null;
-                    elapsed += Time.deltaTime;
                 }
                 StatusLightParent.transform.localPosition = convertPointToVector(isStrike ? fromPoint : toPoint, .01f);
             }
