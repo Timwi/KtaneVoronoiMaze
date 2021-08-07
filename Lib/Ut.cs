@@ -485,5 +485,51 @@ namespace RT.Util.ExtensionMethods
                 return (minMaxIndex, minMaxElem);
             }
         }
+
+        /// <summary>
+        ///     Returns the first element of a sequence, or <c>null</c> if the sequence contains no elements.</summary>
+        /// <typeparam name="T">
+        ///     The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">
+        ///     The <see cref="IEnumerable&lt;T&gt;"/> to return the first element of.</param>
+        /// <returns>
+        ///     <c>null</c> if <paramref name="source"/> is empty; otherwise, the first element in <paramref name="source"/>.</returns>
+        public static T? FirstOrNull<T>(this IEnumerable<T> source) where T : struct
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            using (var e = source.GetEnumerator())
+            {
+                if (e.MoveNext())
+                    return e.Current;
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///     Returns the first element of a sequence that satisfies a given predicate, or <c>null</c> if the sequence
+        ///     contains no elements.</summary>
+        /// <typeparam name="T">
+        ///     The type of the elements of <paramref name="source"/>.</typeparam>
+        /// <param name="source">
+        ///     The <see cref="IEnumerable&lt;T&gt;"/> to return the first element of.</param>
+        /// <param name="predicate">
+        ///     Only consider elements that satisfy this predicate.</param>
+        /// <returns>
+        ///     <c>null</c> if <paramref name="source"/> is empty; otherwise, the first element in <paramref name="source"/>.</returns>
+        public static T? FirstOrNull<T>(this IEnumerable<T> source, Func<T, bool> predicate) where T : struct
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+            using (var e = source.GetEnumerator())
+            {
+                while (e.MoveNext())
+                    if (predicate(e.Current))
+                        return e.Current;
+                return null;
+            }
+        }
     }
 }

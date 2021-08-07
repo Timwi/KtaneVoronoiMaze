@@ -152,8 +152,16 @@ public class VoronoiMazeModule : MonoBehaviour
                 .SelectMany(pair => _voronoi.Edges.SelectIndexWhere(e => (e.edge.Start == pair.Item1 && e.edge.End == pair.Item2) || (e.edge.Start == pair.Item2 && e.edge.End == pair.Item1)));
         }
 
+        // We need to find out where the starting room touches the fringe of the module “first” (counter-clockwise from bottom-left),
+        // so we need to prioritize vertices on the bottom over ones on the right, then the top, then the left.
+        var firstFringeVertex =
+            _voronoi.Polygons[startRoom].Vertices.FirstOrNull(v => v.Y == 0) ??
+            _voronoi.Polygons[startRoom].Vertices.FirstOrNull(v => v.X == 1) ??
+            _voronoi.Polygons[startRoom].Vertices.FirstOrNull(v => v.Y == 1) ??
+            _voronoi.Polygons[startRoom].Vertices.First(v => v.X == 0);
+
         // Iteratively discover the remaining rooms and mark edges as passable
-        var activeEdges = new List<int>(edgesFromRoom(startRoom, _voronoi.Polygons[startRoom].Vertices.Where(v => v.X == 0 || v.X == 1 || v.Y == 0 || v.Y == 1).First()));
+        var activeEdges = new List<int>(edgesFromRoom(startRoom, firstFringeVertex));
         while (activeEdges.Count > 0)
         {
             var edgeIx = obtainModulo(activeEdges, false);
