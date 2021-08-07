@@ -84,7 +84,7 @@ public class VoronoiMazeModule : MonoBehaviour
         _roomLabelPositions = _voronoi.Polygons.Select(p => p.GetLabelPoint(.005)).ToArray();
 
         // Discard unwanted Voronoi diagrams
-        if (_voronoi.Edges.Any(e => e.edge.Length < .05) ||
+        if (_voronoi.Polygons.Any(poly => poly.Vertices.ConsecutivePairs(true).Any(pair => pair.Item1.Distance(pair.Item2) < .05)) ||
             _voronoi.Edges.Any(e => Math.Min(e.edge.Start.Distance(), e.edge.End.Distance()) < .05) ||
             _voronoi.Edges.Any(e => e.edge.Distance(_roomLabelPositions[e.siteA]) < .025 || e.edge.Distance(_roomLabelPositions[e.siteB]) < .025))
             goto tryEverythingAgain;
