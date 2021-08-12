@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using RT.KitchenSink.Geometry;
 using RT.Util.ExtensionMethods;
@@ -23,6 +24,7 @@ public class VoronoiMazeModule : MonoBehaviour
     public KMSelectable SelectableTemplate;
     public GameObject StatusLightParent;
     public GameObject[] Keys;
+    public TextMesh TPLetterTemplate;
 
     public Color DefaultRoomColor;
     public Color PassableColor;
@@ -55,6 +57,8 @@ public class VoronoiMazeModule : MonoBehaviour
     private bool[] _revealedWalls;
     private readonly Queue<(int from, int to, bool strike, string sound)> _animationQueue = new Queue<(int from, int to, bool strike, string sound)>();
     private VoronoiDiagram _voronoi;
+    private TextMesh[] _tpLetterMeshes;
+    private char[] _tpLetters;
 
     void Start()
     {
@@ -389,8 +393,26 @@ public class VoronoiMazeModule : MonoBehaviour
 
         _exploring = true;
         StatusLightParent.transform.localPosition = convertPointToVector(_roomLabelPositions[_curRoom], .01f);
-        StartCoroutine(UpdateVisualsLater());
-        StartCoroutine(AnimationQueue());
+
+        Module.OnActivate = delegate
+        {
+            if (TwitchPlaysActive)
+            {
+                _tpLetterMeshes = new TextMesh[_voronoi.Polygons.Length];
+                _tpLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray().Shuffle().Take(_voronoi.Polygons.Length).ToArray();
+                for (var i = 0; i < _voronoi.Polygons.Length; i++)
+                {
+                    _tpLetterMeshes[i] = Instantiate(TPLetterTemplate, transform);
+                    _tpLetterMeshes[i].name = $"TP Letter {i}";
+                    _tpLetterMeshes[i].text = _tpLetters[i].ToString();
+                    _tpLetterMeshes[i].transform.localPosition = convertPointToVector(_roomLabelPositions[i], .0102f);
+                    _tpLetterMeshes[i].gameObject.SetActive(false);
+                }
+            }
+            Destroy(TPLetterTemplate.gameObject);
+            StartCoroutine(AnimationQueue());
+            UpdateVisuals();
+        };
     }
 
     private IEnumerator AnimationQueue()
@@ -590,6 +612,10 @@ public class VoronoiMazeModule : MonoBehaviour
 
         StatusLightParent.SetActive(_striking || !_exploring);
         Frame.material.color = _striking ? StrikeColor : _isSolved ? SolvedColor : _exploring ? ImpassableColor : CurrentRoomColors[_keysCollected];
+
+        if (_tpLetterMeshes != null)
+            for (var i = 0; i < _tpLetterMeshes.Length; i++)
+                _tpLetterMeshes[i].gameObject.SetActive(TwitchPlaysActive && !_exploring);
     }
 
     const double cf = .0835 / .5;
@@ -598,5 +624,89 @@ public class VoronoiMazeModule : MonoBehaviour
     {
         var p = convertPoint(orig);
         return new Vector3((float) p.X, y, (float) p.Y);
+    }
+
+#pragma warning disable 414
+    private readonly string TwitchHelpMessage = @"!{0} go [activate module] | !{0} M P D [move to rooms M, then P, then D]";
+    private bool TwitchPlaysActive = false;
+#pragma warning restore 414
+
+    public IEnumerator ProcessTwitchCommand(string command)
+    {
+        if (_exploring && Regex.IsMatch(command, @"^\s*go\s*$", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase))
+        {
+            yield return null;
+            _rooms[0].sel.OnInteract();
+            yield return new WaitForSeconds(.1f);
+            yield break;
+        }
+
+        if (_exploring)
+            yield break;
+
+        var rooms = new List<KMSelectable>();
+        foreach (var ch in command)
+        {
+            if (char.IsWhiteSpace(ch))
+                continue;
+            var ix = _tpLetters.IndexOf(c => char.ToUpperInvariant(c) == char.ToUpperInvariant(ch));
+            if (ix == -1)
+                yield break;
+            rooms.Add(_rooms[ix].sel);
+        }
+
+        yield return null;
+        foreach (var room in rooms)
+        {
+            room.OnInteract();
+            yield return new WaitForSeconds(.2f);
+        }
+    }
+
+    public IEnumerator TwitchHandleForcedSolve()
+    {
+        if (_exploring)
+        {
+            _rooms[0].sel.OnInteract();
+            yield return new WaitForSeconds(.2f);
+        }
+
+        while (_keysCollected < 3)
+        {
+            // Find path from current position to position of key #_keysCollected
+            var visited = new Dictionary<int, int>();
+            var q = new Queue<(int room, int parent)>();
+            q.Enqueue((_curRoom, -1));
+
+            while (q.Count > 0)
+            {
+                var (room, parent) = q.Dequeue();
+                if (visited.ContainsKey(room))
+                    continue;
+                visited[room] = parent;
+                if (room == _keys[_keysCollected])
+                    break;
+                foreach (var (_, isPassable, roomA, roomB) in _edges)
+                    if (isPassable && (roomA == room || roomB == room))
+                        q.Enqueue((room == roomA ? roomB : roomA, room));
+            }
+
+            var r = _keys[_keysCollected];
+            var path = new List<int> { r };
+            while (true)
+            {
+                var nr = visited[r];
+                if (nr == -1)
+                    break;
+                path.Add(nr);
+                r = nr;
+            }
+
+            for (int i = path.Count - 1; i >= 0; i--)
+            {
+                _rooms[path[i]].sel.OnInteract();
+                yield return new WaitForSeconds(.2f);
+            }
+        }
     }
 }
