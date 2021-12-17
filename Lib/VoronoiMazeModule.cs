@@ -392,7 +392,13 @@ public class VoronoiMazeModule : MonoBehaviour
             Keys[keyIx].transform.localPosition = convertPointToVector(_roomLabelPositions[_keys[keyIx]], .0101f);
 
         _exploring = true;
-        StatusLightParent.transform.localPosition = convertPointToVector(_roomLabelPositions[_curRoom], .01f);
+
+        // Place the status light in the biggest room that touches a corner, except bottom-left
+        var cornerPolys = Enumerable.Range(0, _voronoi.Polygons.Length)
+            .Where(polyIx => _voronoi.Polygons[polyIx].Vertices.Any(p => (p.X == 1 && p.Y == 0) || (p.X == 0 && p.Y == 1) || (p.X == 1 && p.Y == 1)))
+            .OrderByDescending(polyIx => _voronoi.Polygons[polyIx].Area())
+            .ToArray();
+        StatusLightParent.transform.localPosition = convertPointToVector(_roomLabelPositions[cornerPolys[0]], .01f);
 
         Module.OnActivate = delegate
         {
@@ -520,6 +526,7 @@ public class VoronoiMazeModule : MonoBehaviour
                 Audio.PlaySoundAtTransform("Find", transform);
                 _exploring = false;
                 UpdateVisuals();
+                StatusLightParent.transform.localPosition = convertPointToVector(_roomLabelPositions[_curRoom], .01f);
                 return false;
             }
 
