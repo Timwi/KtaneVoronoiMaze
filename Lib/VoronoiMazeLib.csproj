@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4C3C8D4A-C793-467E-B02A-2ADC1937A9FF}</ProjectGuid>
+    <ProjectGuid>{D8A9747F-C604-4E45-A18E-4D685E54FA4C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>VoronoiMazeLib</RootNamespace>
     <AssemblyName>VoronoiMazeLib</AssemblyName>
